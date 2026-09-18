@@ -26,6 +26,12 @@ with sync_playwright() as p:
     page.on('console', lambda m: print('BROWSER:', m.text[:700], flush=True) if m.type == 'error' else None)
     requests = []
     page.on('request', lambda r: requests.append((r.method, r.url)))
+    google_scripts = {
+        'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7159809234886898',
+        'https://www.googletagmanager.com/gtag/js?id=G-F2E4TJR9YG',
+    }
+    for url in google_scripts:
+        page.route(url, lambda route: route.fulfill(status=200, content_type='application/javascript', body=''))
     page.goto('http://localhost:8080')
     page.screenshot(path=str(ART / 'desktop.png'), full_page=True)
     assert page.locator('#separate').is_disabled()
@@ -84,7 +90,7 @@ with sync_playwright() as p:
             assert max(abs(v) for v in values)>0
     assert not errors, errors
     assert all(method == 'GET' for method, url in requests), requests
-    assert all(url.startswith(('http://localhost:8080','blob:','data:')) for _,url in requests), requests
+    assert all(url in google_scripts or url.startswith(('http://localhost:8080','blob:','data:')) for _,url in requests), requests
     page.screenshot(path=str(ART / 'results.png'), full_page=True)
     page.set_viewport_size({'width':390,'height':844})
     page.screenshot(path=str(ART / 'mobile.png'),full_page=True)

@@ -1,6 +1,6 @@
 # Split — Voice & Music
 
-A static JavaScript app that separates MP3 audio into **vocals** and **instrumental** tracks on your device. Includes local playback, separate stereo WAV downloads, progress, immediate worker cancellation, model caching, and a responsive interface. No account, application backend, analytics, or audio uploads.
+A static JavaScript app that separates MP3 audio into **vocals** and **instrumental** tracks on your device. Includes local playback, separate stereo WAV downloads, progress, immediate worker cancellation, model caching, and a responsive interface. No account, application backend, or audio uploads. The page loads Google AdSense and Google Analytics, which make external requests for advertising and usage measurement.
 
 ## Run locally
 
@@ -18,7 +18,7 @@ The model has already been downloaded into this workspace. In a fresh checkout, 
 python download_model.py
 ```
 
-The downloader verifies the pinned SHA-256. The model is 180,534,758 bytes (172.2 MiB), excluded from Git. The app tries `models/htdemucs.onnx` first and falls back to the revision-pinned Hugging Face URL only if the local file returns 404. Runtime JavaScript and WebAssembly are bundled in `vendor/ort/`, so no CDN is needed. With the local model present, separation makes no external network requests. Model cache storage may be unavailable or evicted by the browser; local hosting still works.
+The downloader verifies the pinned SHA-256. The model is 180,534,758 bytes (172.2 MiB), excluded from Git. The app tries `models/htdemucs.onnx` first and falls back to the revision-pinned Hugging Face URL only if the local file returns 404. Runtime JavaScript and WebAssembly are bundled in `vendor/ort/`, so separation needs no CDN. With the local model present, the audio-processing pipeline makes no external network requests; the page's advertising and analytics scripts still contact Google. Model cache storage may be unavailable or evicted by the browser; local hosting still works.
 
 ## Use
 
@@ -67,7 +67,7 @@ python tests/browser_test.py
 python tests/edge_test.py
 ```
 
-The test uses installed Chrome at the standard Windows path (adjust the executable path for other systems). It runs actual ONNX inference, checks WAV headers/duration/stereo samples, resampling, cancellation/retry, model cache reuse/clear, no upload or external requests with a local model, overlap coverage, and desktop/mobile layout. Screenshots and generated fixtures go in ignored `tests/artifacts/`.
+The test uses installed Chrome at the standard Windows path (adjust the executable path for other systems). It stubs Google advertising and analytics scripts to avoid recording test traffic. It runs actual ONNX inference, checks WAV headers/duration/stereo samples, resampling, cancellation/retry, model cache reuse/clear, no audio uploads or external audio-processing requests with a local model, overlap coverage, and desktop/mobile layout. Screenshots and generated fixtures go in ignored `tests/artifacts/`.
 
 `edge_test.py` additionally checks corrupt audio, failed/truncated model downloads, recovery, mono 48 kHz resampling, and real inference on a host without isolation headers (single WASM thread).
 
