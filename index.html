@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>Split — Voice & Music</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%237460db'/%3E%3Cpath d='M20 17v30M32 9v46M44 22v20' stroke='%23ffffff' stroke-width='6'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header>
+    <a class="brand" href="./" aria-label="Audio splitter home"><span class="brand-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4m4-8v12m4-15v18m4-15v12m4-8v4"/></svg></span>Audio splitter</a>
+    <span class="header-note"><span></span> Separate voice and music in your browser</span>
+    <span class="privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4v5c0 5-8 9-8 9s-8-4-8-9V7l8-4Z"/><path d="m8 12 3 3 5-6"/></svg>Files stay on your device</span>
+  </header>
+  <main>
+    <div class="intro">
+      <div class="eyebrow">SIMPLE. PRIVATE. IN YOUR BROWSER.</div>
+      <h1>Your <span>audio splitter.</span></h1>
+      <p>Separate vocals and music from your MP3. <br>Download both tracks — all without uploading your files.</p>
+    </div>
+    <section class="workspace" aria-label="Audio separator">
+      <label class="dropzone" id="dropzone" for="file">
+        <input type="file" id="file" accept=".mp3,.wav,.m4a,.ogg,.flac,audio/*">
+        <span class="upload-art" aria-hidden="true"><span class="art-back"></span><span class="art-page"><svg viewBox="0 0 24 24"><path d="M8 17V5l12-2v12M8 9l12-2"/><ellipse cx="5" cy="17" rx="3" ry="2"/><ellipse cx="17" cy="15" rx="3" ry="2"/></svg><span>MP3</span></span><span class="art-plus">+</span></span>
+        <strong>Open a track to start separating</strong>
+        <span class="drop-description">Drag and drop your audio here</span>
+        <span class="choose-file"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m0 0L7 8m5-5 5 5M4 15v6h16v-6"/></svg>Choose audio file</span>
+        <small>MP3, WAV & other supported audio · up to 10 minutes / 100 MB</small>
+      </label>
+      <div id="selected" hidden>
+        <div class="file-row"><div class="file-icon">♫</div><div class="file-info"><strong id="filename"></strong><span id="filemeta"></span></div><button id="replace" class="text-button" type="button">Change file</button></div>
+        <audio id="original" controls preload="metadata" aria-label="Original audio"></audio>
+      </div>
+      <div class="options"><label for="backend">Processing <select id="backend"><option value="auto">Auto · prefer GPU</option><option value="wasm">CPU · compatibility mode</option></select></label><span id="capability">Checking your browser…</span></div>
+      <div class="actions"><button id="separate" class="primary" disabled>Separate voice & music <span aria-hidden="true">↗</span></button><button id="cancel" class="secondary" hidden>Cancel</button></div>
+      <div id="status-area" class="status-area" hidden><div class="status-row"><span id="status" role="status" aria-live="polite"></span><span id="percent"></span></div><progress id="progress" max="1" value="0" aria-label="Separation progress"></progress><p id="detail"></p></div>
+      <p id="error" class="error" role="alert" hidden></p>
+      <p class="model-note">First run loads a 180 MB AI model. Desktop recommended; processing can take several minutes.</p>
+    </section>
+    <section id="results" aria-label="Separated tracks" hidden>
+      <div class="results-heading"><h2>Your separated tracks.</h2><span id="result-note">Two tracks. All yours.</span></div>
+      <div class="tracks"><article class="track vocals"><div class="track-heading"><span class="track-symbol">◉</span><span class="track-label">01 / VOCALS</span></div><h3>Vocals</h3><p>Singing, harmonies, and the human part.</p><audio id="voice-player" controls aria-label="Separated voice"></audio><a id="voice-download" class="download" download>Download vocals <span>WAV ↓</span></a></article>
+      <article class="track music"><div class="track-heading"><span class="track-symbol">≋</span><span class="track-label">02 / INSTRUMENTAL</span></div><h3>Instrumental</h3><p>The rhythm, the melody, the rest of it.</p><audio id="music-player" controls aria-label="Separated music"></audio><a id="music-download" class="download" download>Download music <span>WAV ↓</span></a></article></div>
+      <p class="quality-note">AI separation can leave some bleed or artifacts. Results vary with the recording, especially spoken voice over music.</p>
+    </section>
+    <div class="features">
+      <div><span class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4m4-8v12m4-15v18m4-15v12m4-8v4"/></svg></span><h3>Separate voice and music</h3><p>Isolate vocals and the instrumental. <br>Practice, remix, or listen closer.</p></div>
+      <div><span class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4v5c0 5-8 9-8 9s-8-4-8-9V7l8-4Z"/><path d="m8 12 3 3 5-6"/></svg></span><h3>Your files stay yours</h3><p>Audio processing happens in your browser. <br>No file uploads. No accounts.</p></div>
+      <div><span class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v13m0 0-5-5m5 5 5-5M4 16v5h16v-5"/></svg></span><h3>Download your separated tracks</h3><p>Save vocals and music as WAV files. <br>Your original file stays untouched.</p></div>
+    </div>
+  </main>
+  <footer><span>Audio splitter — your files stay on your device.</span><div class="footer-links"><button id="clear-cache" class="text-button">Clear model cache</button><a href="README.md">About & credits ↗</a></div></footer>
+  <noscript>This app needs JavaScript enabled to separate audio on your device.</noscript>
+</body>
+</html>
